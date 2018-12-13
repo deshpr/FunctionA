@@ -10,18 +10,54 @@ package lambda;
  * @author wlloyd
  */
 public class Request {
-    String name;
-    public String getName()
-    {
-        return name;
+    
+    
+    public String GetEncryptedMessage(){
+           String encrypted="";
+           String message = new String(msg);
+        for(int i=0;i<message.length();i++)
+        {
+            int c=message.charAt(i);
+            if(Character.isUpperCase(c))
+            {
+                c=c+(shift%26);
+                if(c>'Z')
+                    c=c-26;
+            }
+            else if(Character.isLowerCase(c))
+            {
+                c=c+(shift%26);
+                if(c>'z')
+                    c=c-26;
+            }
+            encrypted=encrypted+(char) c;
+        }
+        return encrypted;
     }
-    public void setName(String name)
-    {
-        this.name = name;
+    
+    String msg;
+    int shift;
+
+    public String getMsg(){
+        return msg;
     }
-    public Request(String name)
+    
+    public void setMsg(String message){
+        msg = message;
+    }
+    
+    public int getShift()
     {
-        this.name = name;
+        return shift;
+    }
+    public void setShift(int shift)
+    {
+        this.shift = shift;
+    }
+    public Request(String message, int shift)
+    {
+        this.msg = message;
+        this.shift = shift;
     }
     public Request()
     {

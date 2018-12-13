@@ -21,21 +21,48 @@ public class Response extends fiResponse {
     // ADD getters and setters for custom attributes here.
     //
 
-    // Return value
-    private String value;
-    public String getValue()
+    private String msg;
+    public String getMsg()
     {
-        return value;
+        return msg;
     }
-    public void setValue(String value)
+    public void setMsg(String msg)
     {
-        this.value = value;
+        this.msg = msg;
     }
-
+    private int shift;
+    public int getShift()
+    {
+        return shift;
+    }
+    public void setShift(int shift)
+    {
+        this.shift = shift;
+    }
+    long decodeTime;
+    public long getDecodeTime()
+    {
+        return decodeTime;
+    }    
+    
+     public void setDecodeTime(long decodeTime)
+    {
+        this.decodeTime = decodeTime;
+    }
+    long encodeTime;
+    public long getEncodeTime()
+    {
+        return encodeTime;
+    }
+    public void setEncodeTime(long encodeTime)
+    {
+        this.encodeTime = encodeTime;
+    }
+    
     @Override
     public String toString()
     {
-        return "value=" + this.getValue() + super.toString(); 
+        return "value=" + this.getMsg()+ super.toString(); 
     }
 
 }

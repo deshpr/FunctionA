@@ -21,29 +21,22 @@ public class Hello implements RequestHandler<Request, Response>
     static String CONTAINER_ID = "/tmp/container-id";
     static Charset CHARSET = Charset.forName("US-ASCII");
     
-    
     // Lambda Function Handler
     public Response handleRequest(Request request, Context context) {
         // Create logger
         LambdaLogger logger = context.getLogger();
-        
+        long tStart = System.currentTimeMillis();
         // Register function
         register reg = new register(logger);
 
         //stamp container with uuid
         Response r = reg.StampContainer();
-        
-        // *********************************************************************
-        // Implement Lambda Function Here
-        // *********************************************************************
-        String hello = "Hello " + request.getName();
-
-        //Print log information to the Lambda log as needed
-        //logger.log("log message...");
-        
+        String value = request.GetEncryptedMessage();
         // Set return result in Response class, class is marshalled into JSON
-        r.setValue(hello);
-        
+        long tEnd = System.currentTimeMillis();
+        r.setEncodeTime(tEnd - tStart);
+        r.setMsg(value);
+        r.setShift(request.getShift());
         return r;
     }
     
@@ -119,13 +112,19 @@ public class Hello implements RequestHandler<Request, Response>
         Request req = new Request();
         
         // Grab the name from the cmdline from arg 0
-        String name = (args.length > 0 ? args[0] : "");
+        String message = (args.length > 0 ? args[0] : "");
         
         // Load the name into the request object
-        req.setName(name);
+        req.setMsg(message);
+        
+        // Grab the name from the cmdline from arg 0
+        int shift = (args.length > 1 ? Integer.parseInt(args[1]) : 0);
+        
+        // Load the name into the request object
+        req.setShift(shift);
 
         // Report name to stdout
-        System.out.println("cmd-line param name=" + req.getName());
+        System.out.println("cmd-line param name=" + req.getMsg() + " and shift = "+ req.getShift());
         
         // Run the function
         Response resp = lt.handleRequest(req, c);
